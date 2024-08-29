@@ -189,7 +189,8 @@ export async function chatCardRoll(rollCast, label, actor, item, token, advNorDi
       }
     }
     var typephysicaldata = "P";
-    if(item.system.traits.energy) typephysicaldata = "E";
+    if(item.system.traits == undefined) typephysicaldata = "E";
+    else if(item.system?.traits?.energy) typephysicaldata = "E";
     if(safeNumber(item.system.damage) > 0)
     {
       damagedata = "Damage: " + safeNumber(item.system.damage) + " [" + typeisdata + "]" + "[" + typephysicaldata + "]";
