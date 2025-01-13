@@ -53,3 +53,9 @@
 
 ## 2.0.9
 - Roll modifier UI is now limited to 1d8 maximum, and may be used to give negative bonuses for aiming at things in cover
+
+## 2.0.10
+- Items with damage values, but no damage type now show as doing RAW damage
+- Skills can be rusted, doing a -d4 when rolled
+- Vision calculations for tokens
+- Viel stat for checking detection while not actively hiding
