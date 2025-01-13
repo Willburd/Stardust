@@ -55,6 +55,18 @@ export class StardustItemSheet extends ItemSheet {
         context.system.typeisdata = (game.i18n.localize(CONFIG.STARDUST.translate[t]) ?? t)
       }
     }
+    var typephysicaldata = "P";
+    if(context.system.typeisdata == "")
+    {
+      context.system.typeisdata = "RAW";
+      typephysicaldata = "X";
+    }
+    else
+    {
+      if(itemData.system.traits == undefined) typephysicaldata = "E";
+      else if(itemData.system?.traits?.energy) typephysicaldata = "E";
+    }
+
     for (let t in itemData.system.traits) {
       if(safeNumber(itemData.system.traits[t]) == 1)
       {
@@ -106,9 +118,6 @@ export class StardustItemSheet extends ItemSheet {
     
     if(safeNumber(itemData.system.damage) > 0)
     {
-      var typephysicaldata = "P";
-      if(itemData.system.traits == undefined) typephysicaldata = "E";
-      else if(itemData.system?.traits?.energy) typephysicaldata = "E";
       context.system.damagedata = "Damage: " + safeNumber(itemData.system.damage) + " [" + context.system.typeisdata + "]" + "[" + typephysicaldata + "]";
     }
     

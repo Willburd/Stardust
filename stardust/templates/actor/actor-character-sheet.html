@@ -80,11 +80,25 @@
       {{!-- For each skill do a segment, each segment is a sidebar, and a main area for all the skills involved! --}}
       <section class="grid grid-2col">
         <section class="grid-span-1">
-          <section class="grid grid-2col" style="border: 2px groove #eeede0;">
+          <section class="grid grid-4col" style="border: 2px groove #eeede0;">
             <div class="grid-span-1 flex-group-center">
               <label for="system.shields" class="resource-label">Speed</label>
               <div class="resource-content flexrow flex-center flex-between">
               <input type="text" disabled value="{{#getSpeed}}{{/getSpeed}}" data-dtype="Number"/>
+              </div>
+            </div>
+            
+            <div class="grid-span-1 flex-group-center">
+              <label for="system.shields" class="resource-label">Awareness</label>
+              <div class="resource-content flexrow flex-center flex-between">
+              <input type="text" disabled value="{{#getVision}}{{/getVision}}" data-dtype="Number"/>
+              </div>
+            </div>
+
+            <div class="grid-span-1 flex-group-center">
+              <label for="system.shields" class="resource-label">Veil</label>
+              <div class="resource-content flexrow flex-center flex-between">
+              <input type="text" disabled value="{{#getStealth}}{{/getStealth}}" data-dtype="Number"/>
               </div>
             </div>
     

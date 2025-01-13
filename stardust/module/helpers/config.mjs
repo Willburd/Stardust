@@ -78,7 +78,8 @@ STARDUST.trainingtoindex = {
   "master": 4,
   "legendary": 5,
   "mythic": 6,
-  "nightmare": 7
+  "nightmare": 7,
+  "rusted": -1
 };
 
 STARDUST.attributes = {

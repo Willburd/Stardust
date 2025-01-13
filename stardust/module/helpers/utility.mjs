@@ -1,6 +1,9 @@
 export function rollLevelToDice(val) {
   switch(safeNumber(val))
   {
+    case -1:
+      return "1d4"
+
     case 0:
       return "0"
 
@@ -28,6 +31,9 @@ export function rollLevelToDice(val) {
 export function rollLevelToTraining(val) {
   switch(safeNumber(val))
   {
+    case -1:
+      return "Rusted"
+
     case 0:
       return "Untrained"
 
@@ -55,6 +61,9 @@ export function rollLevelToTraining(val) {
 export function rollLevelImagePath(val) {
   switch(safeNumber(val))
   {
+    case -1:
+      return "fas fa-caret-down"
+
     case 0:
       return "fas circle-o"
 
@@ -82,6 +91,9 @@ export function rollLevelImagePath(val) {
 export function maxDiceNumber(val) {
   switch(safeNumber(val))
   {
+    case -1:
+      return 0
+
     case 0:
       return 0
 
@@ -111,19 +123,26 @@ export function solveSkillRoll( actor, baseskill, trainingval) {
   var skillbonus = "";
   if(rollLevelToDice(trainingval) != "0")
   {
-    skillbonus = " + " + rollLevelToDice(trainingval);
+    if(safeNumber(trainingval) >= 0)
+    {
+      skillbonus = " + " + rollLevelToDice(trainingval); // normal
+    }
+    else
+    {
+      skillbonus = " - " + rollLevelToDice(trainingval); // rusted
+    }
   }
   skillroll += rollLevelToDice(actor.system.attributes[baseskill]) + skillbonus;
   return skillroll
 }
 
 export function solveDefenseRoll( actor) {
-  var skillbonus = "";
+  var armorbonus = "";
   if(rollLevelToDice(actor.system.currentarmor) != "0")
   {
-    skillbonus = " + " + (maxDiceNumber(actor.system.currentarmor) / 2);
+    armorbonus = " + " + (maxDiceNumber(actor.system.currentarmor) / 2);
   }
-  var defenseroll = "4" + skillbonus;
+  var defenseroll = "4" + armorbonus;
   return defenseroll
 }
 
@@ -189,8 +208,16 @@ export async function chatCardRoll(rollCast, label, actor, item, token, advNorDi
       }
     }
     var typephysicaldata = "P";
-    if(item.system.traits == undefined) typephysicaldata = "E";
-    else if(item.system?.traits?.energy) typephysicaldata = "E";
+    if(typeisdata == "") 
+    {
+      typeisdata = "RAW";
+      typephysicaldata = "X";
+    }
+    else
+    {
+      if(item.system.traits == undefined) typephysicaldata = "E";
+      else if(item.system?.traits?.energy) typephysicaldata = "E";
+    }
     if(safeNumber(item.system.damage) > 0)
     {
       damagedata = "Damage: " + safeNumber(item.system.damage) + " [" + typeisdata + "]" + "[" + typephysicaldata + "]";
@@ -224,4 +251,19 @@ export async function chatCardRoll(rollCast, label, actor, item, token, advNorDi
   })
 
   return;
+}
+
+export function UpdateTokenSettings(actorData, manualToken)
+{
+  /**************************************************
+  Update tokens
+  ***************************************************/
+  if(manualToken == null) return;
+  if(!actorData.isOwner) return;
+
+  // update sight in linked tokens
+  const originalAngle = manualToken.sight.angle;
+  var update = {["sight"]: actorData.prototypeToken.sight};
+  update.sight.angle = originalAngle;
+  manualToken.update(update);
 }

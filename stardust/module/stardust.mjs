@@ -154,7 +154,7 @@ Handlebars.registerHelper('rollskill', function( actor, baseskill, trainingval) 
 
 Handlebars.registerHelper('skillTrainingImages', function( actor, baseskill, trainingval) {
   var secondhalf = ""
-  if(trainingval > 0)
+  if(trainingval != 0)
   {
     secondhalf = " + <div class=\"" + rollLevelImagePath(trainingval) + "\"></div>"
   }
@@ -228,6 +228,16 @@ Handlebars.registerHelper('getattributecolor', function(val) {
 
 Handlebars.registerHelper('getSpeed', function() {
   return (maxDiceNumber(this.system.attributes["agility"])) + "u"
+});
+
+Handlebars.registerHelper('getStealth', function() {
+  var num = (maxDiceNumber(this.system.attributes["stealth"]))
+  if(num <= 0) num = 2
+  return num
+});
+
+Handlebars.registerHelper('getVision', function() {
+  return (maxDiceNumber(this.system.attributes["will"]) + maxDiceNumber( safeNumber(this.system.skills["perception"].training))) + "u"
 });
 
 Handlebars.registerHelper('getPsiMemory', function() {

@@ -1,4 +1,4 @@
-import { rollLevelToDice,safeNumber,maxDiceNumber } from "../helpers/utility.mjs";
+import { rollLevelToDice,safeNumber,maxDiceNumber,UpdateTokenSettings } from "../helpers/utility.mjs";
 
 /**
  * Extend the base Actor document by defining a custom roll data structure which is ideal for the Simple system.
@@ -73,7 +73,7 @@ export class StardustActor extends Actor {
             }
           }
           for (var k in CONFIG.STARDUST.skillattribute){
-            if(safeNumber(i.system.skills[k].training) > 0)
+            if(safeNumber(i.system.skills[k].training) != 0)
             {
               systemData.skills[k].training += safeNumber(i.system.skills[k].training);
             }
@@ -130,14 +130,27 @@ export class StardustActor extends Actor {
 
       // bulk control
       systemData.maxBulk += maxDiceNumber(this.system.attributes["body"])
+
+      // vision handling for entities
+      if(actorData.prototypeToken)
+      {
+        actorData.prototypeToken.sight.enabled = true;
+        actorData.prototypeToken.sight.range = maxDiceNumber(this.system.attributes["will"]) + maxDiceNumber( safeNumber(this.system.skills["perception"].training));
+      }
     }
     else
     {
       // bulk control
-      systemData.maxBulk += maxDiceNumber(this.system.wounddie) * 2
+      systemData.maxBulk += maxDiceNumber(this.system.wounddie)
+
+      // vision handling for vehicles
+      if(actorData.prototypeToken)
+      {
+        actorData.prototypeToken.sight.enabled = true;
+        actorData.prototypeToken.sight.range = 20;
+      }
     }
   }
-
   
   /**
    * @override
@@ -149,14 +162,20 @@ export class StardustActor extends Actor {
    * is queried and has a roll executed directly from it).
    */
   prepareDerivedData() {
-    const actorData = this;
-    const systemData = actorData.system;
-    const flags = actorData.flags.stardust || {};
-
-
-
-
-    
+    // update tokens from prototype
+    if(this.prototypeToken)
+    {
+      if(this.prototypeToken.actorLink)
+      {
+        for (let tok of this.getActiveTokens(true)) {
+          UpdateTokenSettings(this, tok.document);
+        }
+      }
+      else if(this.token != null && this.token.id != null)
+      {
+        UpdateTokenSettings(this, this.token);
+      }
+    }
   }
 
   /**
