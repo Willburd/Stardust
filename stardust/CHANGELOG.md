@@ -58,4 +58,4 @@
 - Items with damage values, but no damage type now show as doing RAW damage
 - Skills can be rusted, doing a -d4 when rolled
 - Vision calculations for tokens
-- Viel stat for checking detection while not actively hiding
+- Veil stat for checking detection while not actively hiding

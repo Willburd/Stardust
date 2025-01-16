@@ -231,7 +231,7 @@ Handlebars.registerHelper('getSpeed', function() {
 });
 
 Handlebars.registerHelper('getStealth', function() {
-  var num = (maxDiceNumber(this.system.attributes["stealth"]))
+  var num = (maxDiceNumber(this.system.skills["stealth"].training))
   if(num <= 0) num = 2
   return num
 });
